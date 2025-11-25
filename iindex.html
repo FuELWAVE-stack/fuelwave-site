@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mohamednour - Kermit Riddle Challenge</title>
+
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #6df56d;
+            text-shadow: 0 0 10px #2ecc71;
+        }
+
+        #kermitImg {
+            width: 230px;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px #2ecc71;
+        }
+
+        #questionBox {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            width: 60%;
+            margin: auto;
+            box-shadow: 0 0 15px #444;
+        }
+
+        input {
+            padding: 10px;
+            width: 60%;
+            background-color: #0f0f0f;
+            border: 1px solid #2ecc71;
+            color: white;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px 22px;
+            background-color: #2ecc71;
+            color: #0d0d0d;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #45f387;
+        }
+
+        #result {
+            margin-top: 18px;
+            font-size: 20px;
+            color: #ff5252;
+            font-weight: bold;
+        }
+
+        #disadvantage {
+            margin-top: 12px;
+            color: #ffca28;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Kermit’s Riddle Challenge 🐸</h1>
+
+    <!-- Kermit images -->
+    <img id="kermitImg" src="kermit1.jpg">
+
+    <div id="questionBox">
+        <h2 id="question">Loading question...</h2>
+        <input id="answer" placeholder="Type your answer...">
+        <br>
+        <button onclick="checkAnswer()">Submit</button>
+    </div>
+
+    <p id="result"></p>
+    <p id="disadvantage"></p>
+
+    <script>
+        // Local image files
+        const kermitPics = [
+            "kermit1.jpg",
+            "kermit2.jpg",
+            "kermit3.jpg",
+            "kermit4.jpg",
+            "kermit5.jpg"
+        ];
+
+        // QUESTIONS – sorted by difficulty:
+        // EASY → GENERAL KNOWLEDGE
+        // MEDIUM → NORMAL RIDDLES
+        // HARD → DIFFICULT LOGIC RIDDLES
+        const questions = [
+            // EASY GENERAL KNOWLEDGE
+            { q: "How many days are in a week?", a: "7" },
+            { q: "What planet do we live on?", a: "earth" },
+            { q: "What is the capital of Canada?", a: "ottawa" },
+            { q: "How many letters are in the English alphabet?", a: "26" },
+            { q: "What is the fastest land animal?", a: "cheetah" },
+
+            // MEDIUM RIDDLES
+            { q: "What has hands but cannot clap?", a: "clock" },
+            { q: "What has to be broken before you can use it?", a: "egg" },
+            { q: "What gets wetter the more it dries?", a: "towel" },
+            { q: "What is full of holes but still holds water?", a: "sponge" },
+
+            // HARD RIDDLES
+            { q: "I speak without a mouth and hear without ears. What am I?", a: "echo" },
+            { q: "What runs but never walks, has a bed but never sleeps?", a: "river" },
+            { q: "The more you take, the more you leave behind. What are they?", a: "footsteps" },
+            { q: "What disappears as soon as you say its name?", a: "silence" }
+        ];
+
+        const disadvantages = [
+            "Kermit says: -1 point 👎",
+            "Kermit says: Next answer must be in ALL CAPS.",
+            "Kermit says: You lose a life.",
+            "Kermit says: You're too slow… hurry up!",
+            "Kermit says: Skip the next question."
+        ];
+
+        let score = 0;
+        let current = 0;
+
+        function loadQuestion() {
+            document.getElementById("question").innerText = questions[current].q;
+
+            // Alternate Kermit image
+            let imgIndex = current % kermitPics.length;
+            document.getElementById("kermitImg").src = kermitPics[imgIndex];
+        }
+
+        function checkAnswer() {
+            let user = document.getElementById("answer").value.toLowerCase();
+            let correct = questions[current].a;
+
+            if (user === correct) {
+                document.getElementById("result").style.color = "#6df56d";
+                document.getElementById("result").innerText = "Correct!";
+                score++;
+                document.getElementById("disadvantage").innerText = "";
+            } else {
+                document.getElementById("result").style.color = "#ff5252";
+                document.getElementById("result").innerText = "Wrong!";
+                document.getElementById("disadvantage").innerText =
+                    disadvantages[Math.floor(Math.random() * disadvantages.length)];
+            }
+
+            current++;
+            document.getElementById("answer").value = "";
+
+            if (current < questions.length) {
+                setTimeout(loadQuestion, 1200);
+            } else {
+                document.getElementById("question").innerText =
+                    "Game finished! Your score: " + score;
+            }
+        }
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>
